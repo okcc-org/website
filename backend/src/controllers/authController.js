@@ -64,7 +64,15 @@ exports.login = async (req, res, next) => {
         }
 
         // Generate JWT token
-        const token = jwt.sign({ userId: user.id }, config.jwt.secret, { expiresIn: config.jwt.expiresIn });
+        const token = jwt.sign(
+            {
+                userId: user.id,
+                email: user.email,
+                role: user.role,
+            },
+            config.jwt.secret,
+            { expiresIn: config.jwt.expiresIn }
+        );
 
         // Exclude password from response
         const { password:_, ...userWithoutPassword } = user;

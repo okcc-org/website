@@ -14,3 +14,11 @@ exports.authenticateUser = (req, res, next) => {
         next();
     });
 };
+
+exports.isAdmin = (req, res, next) => {
+    if(req.user.role !== 'admin') {
+        throw UnauthorizedError("You are not authorized to access this resource");
+    }
+    next();
+};
+
