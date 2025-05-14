@@ -3,8 +3,8 @@ const bcrypt = require('bcrypt');
 const { ConflictError, UnauthorizedError } = require('../utils/CutstomError');
 const { ResponseUtil } = require('../utils/ResponseDTO');
 const config = require('../config/config');
-const jwt = require ('jsonwebtoken');
-
+const jwt = require('jsonwebtoken');
+const passport = require('passport');
 
 exports.register = async (req, res, next) => {
     try {
@@ -38,7 +38,7 @@ exports.register = async (req, res, next) => {
         // Exclude password from response
         const { password:_, ...userWithoutPassword } = user;
 
-        res.status(201).json(
+        return res.status(201).json(
             ResponseUtil.success('Registration completed successfully', userWithoutPassword)
         );
 
@@ -77,7 +77,7 @@ exports.login = async (req, res, next) => {
         // Exclude password from response
         const { password:_, ...userWithoutPassword } = user;
 
-        res.status(200).json(
+        return res.status(200).json(
             ResponseUtil.success('Login successful', { user: userWithoutPassword, token })
         );
 
@@ -96,3 +96,72 @@ exports.logout = async (req, res, next) => {
         next(e);
     }
 }
+
+exports.googleAuth = (req, res, next) => {
+    passport.authenticate('google-login', {
+        scope: ['profile', 'email'],
+        session: false
+    })(req, res, next);
+};
+
+exports.googleCallback = async (req, res, next) => {
+    passport.authenticate('google-login', { session: false }, async (err, user) => {
+        try {
+            if (err) {
+                return next(err);
+            }
+            if (!user) {
+                return next(UnauthorizedError('Google authentication failed'));
+            }
+
+            // Generate JWT token
+            const token = jwt.sign(
+                {
+                    userId: user.id,
+                    email: user.email,
+                    role: user.role,
+                },
+                config.jwt.secret,
+                { expiresIn: config.jwt.expiresIn }
+            );
+
+            // Exclude password from response
+            const { password:_, ...userWithoutPassword } = user;
+
+            // Redirect to frontend with token
+            // redirect url should be modified
+            res.redirect('http://localhost:8080/');
+        } catch (error) {
+            next(error);
+        }
+    })(req, res, next);
+};
+
+exports.googleSignup = (req, res, next) => {
+    passport.authenticate('google-signup', {
+        scope: ['profile', 'email'],
+        session: false
+    })(req, res, next);
+};
+
+exports.googleSignupCallback = async (req, res, next) => {
+    passport.authenticate('google-signup', { session: false }, async (err, user) => {
+        try {
+            if (err) {
+                return next(err);
+            }
+            if (!user) {
+                return next(UnauthorizedError('Google signup failed'));
+            }
+
+            // Exclude password from response
+            const { password:_, ...userWithoutPassword } = user;
+
+            // Redirect to frontend with token
+            // redirect url should be modified
+            res.redirect(`${process.env.FRONTEND_URL}/auth/google/signup/callback?user=${JSON.stringify(userWithoutPassword)}`);
+        } catch (error) {
+            next(error);
+        }
+    })(req, res, next);
+};

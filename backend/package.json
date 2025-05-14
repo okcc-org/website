@@ -21,6 +21,8 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
     "pg": "^8.15.6",
     "pg-hstore": "^2.3.4",
     "prisma": "^6.7.0",
