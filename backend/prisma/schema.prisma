@@ -46,6 +46,38 @@ model Address {
   @@map("addresses")
 }
 
+model News {
+  id          Int           @id @default(autoincrement())
+  title       String
+  summary     String?       @db.Text
+  thumbnail   String        # thumbnail url
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  contents    NewsContent[]
+
+  @@map("news")
+}
+
+model NewsContent {
+  id        Int         @id @default(autoincrement())
+  type      ContentType // TEXT or IMAGE
+  content   String      // If text -> contents, If image -> url
+  order     Int         // contents order
+  newsId    Int         @map("news_id")
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+
+  news      News        @relation(fields: [newsId], references: [id], onDelete: Cascade)
+
+  @@map("news_contents")
+}
+
+enum ContentType {
+  TEXT
+  IMAGE
+}
+
 enum Role {
   ADMIN
   USER

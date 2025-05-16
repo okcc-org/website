@@ -8,7 +8,7 @@ const passport = require('passport');
 
 exports.register = async (req, res, next) => {
     try {
-        const { email, password, validatePassword, name } = req.body;
+        const { email, password, validatePassword, firstName, lastName } = req.body;
 
         // Check duplicate email
         const existingUser = await findUserByEmail(email);
@@ -32,7 +32,7 @@ exports.register = async (req, res, next) => {
         const user = await createUser({
             email,
             password: hashedPassword,
-            name,
+            name: `${firstName} ${lastName}`,
         });
 
         // Exclude password from response
@@ -107,8 +107,8 @@ exports.googleAuth = (req, res, next) => {
 exports.googleCallback = async (req, res, next) => {
     passport.authenticate('google-login', { session: false }, async (err, user) => {
         try {
-            if (err) {
-                return next(err);
+            if (e) {
+                return next(e);
             }
             if (!user) {
                 return next(UnauthorizedError('Google authentication failed'));
@@ -131,8 +131,8 @@ exports.googleCallback = async (req, res, next) => {
             // Redirect to frontend with token
             // redirect url should be modified
             res.redirect('http://localhost:8080/');
-        } catch (error) {
-            next(error);
+        } catch (e) {
+            next(e);
         }
     })(req, res, next);
 };
@@ -160,8 +160,8 @@ exports.googleSignupCallback = async (req, res, next) => {
             // Redirect to frontend with token
             // redirect url should be modified
             res.redirect(`${process.env.FRONTEND_URL}/auth/google/signup/callback?user=${JSON.stringify(userWithoutPassword)}`);
-        } catch (error) {
-            next(error);
+        } catch (e) {
+            next(e);
         }
     })(req, res, next);
 };

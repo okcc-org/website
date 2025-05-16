@@ -8,12 +8,15 @@ exports.createUser = async (data) => {
 
 exports.findUserByEmail = async (email, provider ='local') => {
   return prisma.user.findUnique({
-    where: { email, provider },
+    where: {
+      email: email,
+      provider: provider,
+    },
   });
 };
 
 exports.findUserById = async (id) => {
   return prisma.user.findUnique({
-    where: { id },
+    where: { id: id },
   });
 }; 

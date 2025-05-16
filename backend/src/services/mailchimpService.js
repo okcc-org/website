@@ -34,9 +34,7 @@ class MailchimpService {
 
     // Send email to all subscribers
     async sendEmail(subject, content) {
-        try {
-            console.log('Sending email with:', { subject, contentLength: content.length });
-            
+        try {            
             // Create campaign
             const campaign = await this.api.post('/campaigns', {
                 type: 'regular',
@@ -45,14 +43,12 @@ class MailchimpService {
                 },
                 settings: {
                     subject_line: subject,
-                    from_name: 'OKCC',
-                    from_email: 'hello@okccenter.com',
+                    from_name: 'Orlando Korean Culture Center',
+                    reply_to: 'hello@okccenter.com',
                     auto_footer: true
                 }
             });
             
-            console.log('Campaign created:', campaign.data);
-
             // Set HTML content
             await this.api.put(`/campaigns/${campaign.data.id}/content`, {
                 html: content
@@ -63,11 +59,6 @@ class MailchimpService {
             
             return campaign.data;
         } catch (error) {
-            console.error('Mailchimp Send Email Error:', {
-                status: error.response?.status,
-                data: error.response?.data,
-                message: error.message
-            });
             throw InternalServerError('Failed to send newsletter');
         }
     }
