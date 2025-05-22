@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../config/multer');
-const { getNews, getNewsById, createNews, updateNews, deleteNews } = require('../controllers/newsController');
+const { getRecentNews, getNewsById, createNews, updateNews, deleteNews } = require('../controllers/newsController');
 
 // Get all news
-router.get('/', getNews);
+router.get('/', getRecentNews);
 
 // Get news by id
 router.get('/:id', getNewsById);

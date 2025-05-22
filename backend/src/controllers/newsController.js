@@ -9,7 +9,7 @@ const path = require('path');
 exports.getRecentNews = async (req, res, next) => {
     try {
         const news = await findRecent();
-        res.status(200).json(ResponseUtil("Recent news fetched successfully", news));
+        res.status(200).json(ResponseUtil.success("Recent news fetched successfully", news));
     } catch (e) {
         next(e);
     }
@@ -23,7 +23,7 @@ exports.getNewsById = async (req, res, next) => {
         if (!news) {
             throw NotFoundError("News not found");
         }
-        res.status(200).json(ResponseUtil("News fetched successfully", news));
+        res.status(200).json(ResponseUtil.success("News fetched successfully", news));
     } catch (e) {
         next(e);
     }
@@ -38,7 +38,7 @@ exports.createNews = async (req, res, next) => {
     try {
         const { } = req.body
         const createdNews = await create(req.body);
-        res.status(201).json(ResponseUtil("News created successfully", createdNews));
+        res.status(201).json(ResponseUtil.success("News created successfully", createdNews));
     } catch (e) {
         next(e);
     }
@@ -48,7 +48,7 @@ exports.createNews = async (req, res, next) => {
 exports.updateNews = async (req, res, next) => {
     try {
         const updatedNews = await update(parseInt(req.params.id), req.body);
-        res.status(200).json(ResponseUtil("News updated successfully", updatedNews));
+        res.status(200).json(ResponseUtil.success("News updated successfully", updatedNews));
     } catch (e) {
         next(e);
     }
@@ -85,7 +85,7 @@ exports.deleteNews = async (req, res, next) => {
         }
 
         const deletedNews = await remove(parseInt(id));
-        res.status(200).json(ResponseUtil("News deleted successfully", deletedNews));
+        res.status(200).json(ResponseUtil.success("News deleted successfully", deletedNews));
     } catch (e) {
         next(e);
     }

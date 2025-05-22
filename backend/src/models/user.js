@@ -18,5 +18,27 @@ exports.findUserByEmail = async (email, provider ='local') => {
 exports.findUserById = async (id) => {
   return prisma.user.findUnique({
     where: { id: id },
+    include: {
+      address: true
+    }
   });
 }; 
+
+exports.updateUserById = async (id, data) => {
+  return prisma.user.update({
+    where: { id: id },
+    data: data,
+    include: {
+      address: true
+    }
+  })
+}
+
+exports.changePasswordById = async (id, password) => {
+  return prisma.user.update({
+    where: { id: id },
+    data: {
+      password: password,
+    },
+  })
+}

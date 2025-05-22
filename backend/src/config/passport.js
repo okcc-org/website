@@ -1,7 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { findUserByEmail, createUser } = require('../models');
-const { UnauthorizedError } = require('../utils/CutstomError');
+const { UnauthorizedError } = require('../utils/CustomError');
 
 // for login
 passport.use('google-login', new GoogleStrategy({

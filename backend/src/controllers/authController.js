@@ -1,6 +1,6 @@
 const { createUser, findUserByEmail } = require('../models');
 const bcrypt = require('bcrypt');
-const { ConflictError, UnauthorizedError } = require('../utils/CutstomError');
+const { ConflictError, UnauthorizedError } = require('../utils/CustomError');
 const { ResponseUtil } = require('../utils/ResponseDTO');
 const config = require('../config/config');
 const jwt = require('jsonwebtoken');
@@ -66,7 +66,7 @@ exports.login = async (req, res, next) => {
         // Generate JWT token
         const token = jwt.sign(
             {
-                userId: user.id,
+                id: user.id,
                 email: user.email,
                 role: user.role,
             },
@@ -120,6 +120,7 @@ exports.googleCallback = async (req, res, next) => {
                     userId: user.id,
                     email: user.email,
                     role: user.role,
+                    provider: user.provider,
                 },
                 config.jwt.secret,
                 { expiresIn: config.jwt.expiresIn }

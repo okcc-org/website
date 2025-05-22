@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { ConflictError, InternalServerError } = require('../utils/CutstomError');
+const { ConflictError, InternalServerError } = require('../utils/CustomError');
 
 class MailchimpService {
     constructor() {
