@@ -1,14 +1,14 @@
 const { createUser, findUserByEmail } = require('../models');
 const bcrypt = require('bcrypt');
-const { ConflictError, UnauthorizedError } = require('../utils/CutstomError');
+const { ConflictError, UnauthorizedError } = require('../utils/CustomError');
 const { ResponseUtil } = require('../utils/ResponseDTO');
 const config = require('../config/config');
-const jwt = require ('jsonwebtoken');
-
+const jwt = require('jsonwebtoken');
+const passport = require('passport');
 
 exports.register = async (req, res, next) => {
     try {
-        const { email, password, validatePassword, name } = req.body;
+        const { email, password, validatePassword, fullName } = req.body;
 
         // Check duplicate email
         const existingUser = await findUserByEmail(email);
@@ -32,13 +32,13 @@ exports.register = async (req, res, next) => {
         const user = await createUser({
             email,
             password: hashedPassword,
-            name,
+            name: fullName,
         });
 
         // Exclude password from response
         const { password:_, ...userWithoutPassword } = user;
 
-        res.status(201).json(
+        return res.status(201).json(
             ResponseUtil.success('Registration completed successfully', userWithoutPassword)
         );
 
@@ -64,12 +64,20 @@ exports.login = async (req, res, next) => {
         }
 
         // Generate JWT token
-        const token = jwt.sign({ userId: user.id }, config.jwt.secret, { expiresIn: config.jwt.expiresIn });
+        const token = jwt.sign(
+            {
+                id: user.id,
+                email: user.email,
+                role: user.role,
+            },
+            config.jwt.secret,
+            { expiresIn: config.jwt.expiresIn }
+        );
 
         // Exclude password from response
         const { password:_, ...userWithoutPassword } = user;
 
-        res.status(200).json(
+        return res.status(200).json(
             ResponseUtil.success('Login successful', { user: userWithoutPassword, token })
         );
 
@@ -88,3 +96,73 @@ exports.logout = async (req, res, next) => {
         next(e);
     }
 }
+
+exports.googleAuth = (req, res, next) => {
+    passport.authenticate('google-login', {
+        scope: ['profile', 'email'],
+        session: false
+    })(req, res, next);
+};
+
+exports.googleCallback = async (req, res, next) => {
+    passport.authenticate('google-login', { session: false }, async (err, user) => {
+        try {
+            if (e) {
+                return next(e);
+            }
+            if (!user) {
+                return next(UnauthorizedError('Google authentication failed'));
+            }
+
+            // Generate JWT token
+            const token = jwt.sign(
+                {
+                    userId: user.id,
+                    email: user.email,
+                    role: user.role,
+                    provider: user.provider,
+                },
+                config.jwt.secret,
+                { expiresIn: config.jwt.expiresIn }
+            );
+
+            // Exclude password from response
+            const { password:_, ...userWithoutPassword } = user;
+
+            // Redirect to frontend with token
+            // redirect url should be modified
+            res.redirect('http://localhost:8080/');
+        } catch (e) {
+            next(e);
+        }
+    })(req, res, next);
+};
+
+exports.googleSignup = (req, res, next) => {
+    passport.authenticate('google-signup', {
+        scope: ['profile', 'email'],
+        session: false
+    })(req, res, next);
+};
+
+exports.googleSignupCallback = async (req, res, next) => {
+    passport.authenticate('google-signup', { session: false }, async (err, user) => {
+        try {
+            if (err) {
+                return next(err);
+            }
+            if (!user) {
+                return next(UnauthorizedError('Google signup failed'));
+            }
+
+            // Exclude password from response
+            const { password:_, ...userWithoutPassword } = user;
+
+            // Redirect to frontend with token
+            // redirect url should be modified
+            res.redirect(`${process.env.FRONTEND_URL}/auth/google/signup/callback?user=${JSON.stringify(userWithoutPassword)}`);
+        } catch (e) {
+            next(e);
+        }
+    })(req, res, next);
+};
