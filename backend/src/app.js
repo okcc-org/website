@@ -5,6 +5,8 @@ const morgan = require('morgan');
 const config = require('./config/config');
 const errorHandler = require('./middleware/errorHandler');
 const passport = require('./config/passport');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./config/swagger');
 
 const app = express();
 
@@ -15,6 +17,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
+// swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 // Serve static files from uploads directory
 app.use('/uploads', express.static('uploads'));
 
@@ -22,12 +27,12 @@ app.use('/uploads', express.static('uploads'));
 app.use(passport.initialize());
 
 // Routes
-app.get('/', (req, res) => {
-  res.send('<a href="/api/auth/google">Login with Google</a>');
-});
-app.get('/google', (req, res) => {
-  res.send('<a href="/api/auth/google/signup">Signup with Google</a>');
-});
+// app.get('/', (req, res) => {
+//   res.send('<a href="/api/auth/google">Login with Google</a>');
+// });
+// app.get('/google', (req, res) => {
+//   res.send('<a href="/api/auth/google/signup">Signup with Google</a>');
+// });
 app.use('/api', require('./routers'));
 
 // Error handling middleware

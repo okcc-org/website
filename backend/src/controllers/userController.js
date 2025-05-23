@@ -13,7 +13,8 @@ exports.getUser = async (req, res, next) => {
             throw NotFoundError("User not found");
         }
 
-        return res.status(200).json(ResponseUtil.success("User fetched successfully", user));
+        const { password:_, ...userWithoutPassword } = user;
+        return res.status(200).json(ResponseUtil.success("User fetched successfully", userWithoutPassword));
     } catch (e) {
         next(e);
     }
@@ -22,14 +23,14 @@ exports.getUser = async (req, res, next) => {
 exports.updateUser = async (req, res, next) => {
     try {
         const userId = req.user.id;
-        const { name, phone, address } = req.body;
+        const { fullName, phone, address } = req.body;
 
         // Initialize the updateData object
         const updateData = {};
 
         // Check if the field exists and add it to the updateData object
-        if (name !== undefined) {
-            updateData.name = name;
+        if (fullName !== undefined) {
+            updateData.fullName = fullName;
         }
         if (phone !== undefined) {
             updateData.phone = phone;
@@ -52,7 +53,9 @@ exports.updateUser = async (req, res, next) => {
         }
 
         const user = await updateUserById(userId, updateData);
-        return res.status(200).json(ResponseUtil.success("User info updated successfully", user));
+        const { password:_, ...userWithoutPassword } = user;
+
+        return res.status(200).json(ResponseUtil.success("User info updated successfully", userWithoutPassword));
     } catch (e) {
         next(e);
     }
@@ -88,7 +91,9 @@ exports.changePassword = async (req, res, next) => {
         // Hash new password
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         const user = await changePasswordById(userId, hashedPassword);
-        return res.status(200).json(ResponseUtil.success("Password successfully changed", user));
+        const { password:_, ...userWithoutPassword } = user;
+
+        return res.status(200).json(ResponseUtil.success("Password successfully changed", userWithoutPassword));
     } catch (e) {
         next(e);
     }

@@ -1,0 +1,558 @@
+openapi: 3.0.0
+info:
+  title: OKCC WEBSITE API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api
+    description: Local Server
+
+paths:
+  # Auth
+  /auth/register:
+    post: 
+      summary: Register a new user
+      description: Create a new user account with email and password
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+            example:
+              email: "user@example.com"
+              password: "password123"
+              validatePassword: "password123"
+              fullName: "John Lee"
+      responses:
+        '201':
+          description: Registration completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+              example:
+                success: true
+                message: "Registration completed successfully"
+                data:
+                  id: 1
+                  email: "user@example.com"
+                  name: "John Lee"
+                  role: "USER"
+                  createdAt: "2025-05-22T10:00:00Z"
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /auth/login:
+    post:
+      summary: Login to the system
+      description: Authenticate user with email and password
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+            example:
+              email: "user@example.com"
+              password: "password123"
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+              example:
+                success: true
+                message: "Login successful"
+                data:
+                  user: 
+                    id: 1
+                    email: "user@example.com"
+                    name: "John Lee"
+                    role: "USER"
+                    createdAt: "2025-05-22T10:00:00Z"
+                  token: "asdfasdfasdf.fsdafdasfadsf12321.dsfasfdasfads"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  # Subscription
+  /subscribe:
+    post:
+      summary: Subscribe to the newsletter
+      description: Subscribe to the newsletter
+      tags:
+        - Subscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: '#/components/schemas/subscribe'
+            example:
+              email: example@gmail.com
+      responses:
+        '201':
+          description: successfully subscribed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+              example:
+                success: true
+                message: "Subscribed successfully"
+                data: 
+                  id: "abc123def456"
+                  email_address: "example@gmail.com"
+                  status: "subscribed"
+                  list_id: "list123"
+                  created_at: "2024-03-20T10:00:00Z"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  
+  /subscribe/send-email:
+    post:
+      summary: Send a new email to all subscribers
+      description: Send a new email to a user
+      tags:
+        - Subscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/sendEmail'
+            example:
+              subject: "hello"
+              content: "This is test email"
+      responses:
+        '200':
+          description: Email sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+              example:
+                success: true
+                message: "Email sent successfully"
+                data:
+                  campaign_id: "campaign123"
+                  status: "sent"
+                  recipients_count: 150
+                  sent_at: "2024-03-20T10:00:00Z"
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  # user
+  /user/profile:
+    get:
+      summary: Get user profile
+      description: Get user profile
+      tags:
+        - User
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+              example:
+                success: true
+                message: "User profile retrieved successfully"
+                data:
+                  id: 1
+                  email: "user@example.com"
+                  name: "John Lee"
+                  phone: "1234567890"
+                  role: "USER"
+                  address:
+                    id: 1
+                    address: "123 Main St"
+                    city: "Anytown"
+                    state: "FL"
+                    zip: "12345"
+                    country: "USA"
+                    createdAt: "2024-03-20T10:00:00Z"
+                  provider: "local"
+                  createdAt: "2024-03-20T10:00:00Z"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    put:
+      summary: Update user profile
+      description: Update user profile
+      tags:
+        - User
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+            example:
+              fullName: "John Lee"
+              phone: "1234567890"
+              address:
+                address1: "123 Main St"
+                address2: "Apt 1"
+                city: "Anytown"
+                state: "FL"
+                zip: "12345"
+                country: "USA"
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+              example:
+                success: true
+                message: "User profile updated successfully"
+                data:
+                  id: 1
+                  email: "user@example.com"
+                  name: "John Lee"
+                  phone: "1234567890"
+                  role: "USER"
+                  address:
+                    id: 1
+                    address1: "123 Main St"
+                    address2: "Apt 1"
+                    city: "Anytown"
+                    state: "FL"
+                    zip: "12345"
+                    country: "USA"
+                    createdAt: "2024-03-20T10:00:00Z"
+                  provider: "local"
+                  createdAt: "2024-03-20T10:00:00Z"
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /user/change-password:
+    put:
+      summary: Change user password
+      description: Change user password
+      tags:
+        - User
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserChangePassword'
+            example:
+              currentPassword: "password1234"
+              newPassword: "password123"
+              newConfirmPassword: "password123"
+      responses:
+        '200':
+          description: Password changed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+              example:
+                success: true
+                message: "Password changed successfully"
+                data:
+                  id: 1
+                  email: "user@example.com"
+                  name: "John Lee"
+                  phone: "1234567890"
+                  role: "USER"
+                  address:
+                    id: 1
+                    address: "123 Main St"
+                    city: "Anytown"
+                    state: "FL"
+                    zip: "12345"
+                    country: "USA"
+                    createdAt: "2024-03-20T10:00:00Z"
+                  provider: "local"
+                  createdAt: "2024-03-20T10:00:00Z"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+# Componenets
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+  # RequestBody
+    # Auth
+    UserRegister:
+      type: object
+      required:
+        - email
+        - password
+        - validatePassword
+        - fullName
+      properties:
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        password:
+          type: string
+          format: password
+          minLength: 8
+          example: "password123"
+        validatePassword:
+          type: string
+          format: password
+          example: "password123"
+        fullName:
+          type: string
+          example: "John Lee"
+
+    UserLogin:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        password:
+          type: string
+          format: password
+          example: "password123"
+    
+    # subscribe
+    subscribe:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+          example: example@gmail.com
+    sendEmail:
+      type: object
+      required:
+        - subject
+        - content
+      properties:
+        subject:
+          type: string
+          example: "hello"
+        content:
+          type: string
+          example: "This is test email"
+    # user
+    UserUpdate:
+      type: object
+      required:
+        - fullName
+        - phone
+        - address
+      properties:
+        fullName:
+          type: string
+          example: "John Lee"
+        phone:
+          type: string
+          example: "1234567890"
+        address:
+          type: object
+          properties:
+            address1:
+              type: string
+              example: "123 Main St"
+            address2:
+              type: string
+              example: "Apt 1"
+            city:
+              type: string
+              example: "Anytown"
+            state:
+              type: string
+              example: "FL"
+            zip:
+              type: string
+              example: "12345"
+            country:
+              type: string
+              example: "USA"   
+    UserChangePassword:
+      type: object
+      required:
+        - currentPassword
+        - newPassword
+        - newConfirmPassword
+      properties:
+        currentPassword:
+          type: string
+          example: "password1234"
+        newPassword:
+          type: string
+          example: "password123"
+        newConfirmPassword:
+          type: string
+          example: "password123"
+  
+  # Response
+    Success:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Success retreiving data"
+        data:
+          type: object
+          nullable: true
+
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: "An error occurred"
+        data:
+          type: object
+          nullable: true
+
+  responses:            
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            message: "Bad request"
+            data:
+              code: "BAD_REQUEST"
+              details: "Invalid input data"
+
+    Unauthorized:
+      description: User is unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            message: "User is unauthorized"
+            data:
+              code: "UNAUTHORIZED"
+              details: "Invalid credentials"
+
+    Forbidden:
+      description: Requested resource is forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            message: "Requested resource is forbidden"
+            data:
+              code: "FORBIDDEN"
+              details: "Insufficient permissions"
+
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            message: "Not found"
+            data:
+              code: "NOT_FOUND"
+              details: "Resource not found"
+
+    MethodNotAllowed:
+      description: Request method not allowed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            message: "Request method not allowed"
+            data:
+              code: "METHOD_NOT_ALLOWED"
+              details: "This HTTP method is not supported"
+
+    Conflict:
+      description: Conflict with request occurred
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            message: "Conflict with request occurred"
+            data:
+              code: "CONFLICT"
+              details: "Email already exists"
+
+    ValidationError:
+      description: Request contains validation errors
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            message: "Request contains validation errors"
+            data:
+              code: "VALIDATION_ERROR"
+              details: "Password must be at least 8 characters long"
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            message: "Internal server error"
+            data:
+              code: "INTERNAL_SERVER_ERROR"
+              details: "An unexpected error occurred"
+

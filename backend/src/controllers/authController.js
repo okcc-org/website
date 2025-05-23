@@ -8,7 +8,7 @@ const passport = require('passport');
 
 exports.register = async (req, res, next) => {
     try {
-        const { email, password, validatePassword, firstName, lastName } = req.body;
+        const { email, password, validatePassword, fullName } = req.body;
 
         // Check duplicate email
         const existingUser = await findUserByEmail(email);
@@ -32,7 +32,7 @@ exports.register = async (req, res, next) => {
         const user = await createUser({
             email,
             password: hashedPassword,
-            name: `${firstName} ${lastName}`,
+            name: fullName,
         });
 
         // Exclude password from response

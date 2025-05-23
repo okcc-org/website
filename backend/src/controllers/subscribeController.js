@@ -18,7 +18,7 @@ exports.subscribe = async (req, res, next) => {
         }
         const subscribe = await mailchimpService.subscribe(email);
 
-        res.status(201).json(ResponseUtil.success(undefined, subscribe));
+        res.status(201).json(ResponseUtil.success("Subscribed successfully", subscribe));
     } catch (e) {
         next(e);
     }
@@ -28,7 +28,7 @@ exports.sendEmail = async (req, res, next) => {
     try {
         const { subject, content } = req.body;
         const result = await mailchimpService.sendEmail(subject, content);
-        res.status(200).json(ResponseUtil.success(undefined, result));
+        res.status(200).json(ResponseUtil.success("Email sent successfully", result));
     } catch (e) {
         next(e);
     }
