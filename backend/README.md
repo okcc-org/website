@@ -6,14 +6,16 @@ Backend server for the OKCC website.
 
 ```
 src/
-├── app.js              # Application entry point
-├── config/             # Configuration files
-├── controllers/        # Controllers
-├── models/             # Database models
-├── routes/             # Routes
-├── services/           # Business logic
-├── utils/              # Utility functions
-└── middleware/         # Custom middleware
+├── config/       # Configuration files
+├── controllers/  # Route controllers
+├── docs/         # API documentation
+├── middleware/   # Custom middleware
+├── models/       # Data models
+├── prisma/       # Prisma schema
+├── routers/      # Route definitions
+├── services/     # External service integrations
+├── uploads/      # File uploads
+└── utils/        # Utility functions
 ```
 
 ## Installation
@@ -38,28 +40,51 @@ git clone [repository-url]
 ```bash
 npm install
 ```
-
-5. Create .env file and set required environment variables:
-```
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=okcc_db
-DB_USER=postgres
-DB_PASSWORD=your_password
+5. Database migration
+```bash
+npx prisma migrate dev
 ```
 
-6. Start the server:
+6. Create .env file and set required environment variables:
+```
+DB_URL=postgresql://postgres:<yourpassword>@localhost:5432/okcc_db
+PORT=8080
+NODE_ENV=development
+FRONTEND_URL=http://localhost:3000
+
+# JWT
+JWT_SECRET=your_secret_key
+JWT_EXPIRES_IN=1h
+
+# MailChimp
+MAILCHIMP_API_KEY=your_api_key
+MAILCHIMP_SERVER_PREFIX=your_prefix
+MAILCHIMP_LIST_ID=your_list_id
+
+# Google OAuth
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_CALLBACK_URL=
+GOOGLE_SIGNUP_CALLBACK_URL=
+
+# Cloud
+STORAGE_TYPE=local
+```
+
+7. Start the server:
 ```bash
 npm run start
 ```
 
-## API Endpoints
-
+## API Documentation
+- API documentation using Swagger UI
+- Access URL: `http://localhost:8080/api-docs`
 
 ## Technology Stack
-
 - Node.js
 - Express.js
 - PostgreSQL
-- Sequelize
-- JWT
+- Prisma ORM
+- JWT Authentication
+- Google OAuth2.0
+- Mailchimp API
