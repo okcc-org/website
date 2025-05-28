@@ -1,24 +1,11 @@
-// HomePage.jsx
 import React, { useState, useEffect } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { FaBars } from 'react-icons/fa';
 
 const newsItems = [
-  {
-    title: 'News 1',
-    description: "Body text for whatever you'd like to add more.",
-    image: '/news-image.png',
-  },
-  {
-    title: 'News 2',
-    description: "Body text for whatever you'd like to add more.",
-    image: '/news-image.png',
-  },
-  {
-    title: 'News 3',
-    description: "Body text for whatever you'd like to add more.",
-    image: '/news-image.png',
-  },
+  { title: 'News 1', description: "Body text for whatever you'd like to add more.", image: '/news-image.png' },
+  { title: 'News 2', description: "Body text for whatever you'd like to add more.", image: '/news-image.png' },
+  { title: 'News 3', description: "Body text for whatever you'd like to add more.", image: '/news-image.png' },
 ];
 
 export default function HomePage() {
@@ -49,17 +36,19 @@ export default function HomePage() {
   return (
     <div className="font-brandon">
       {/* Header */}
-      <header className="flex items-center justify-between px-6 py-4 relative">
-        <img src="/okcc-logo.jpg" alt="OKCC Logo" className="h-16 ml-12" />
-        <nav className="hidden md:flex gap-16 items-center text-lg -ml-12">
-          <a href="#" className="text-base font-black">Programs</a>
-          <a href="#" className="text-base font-black">Get Involved</a>
-          <a href="#" className="text-base font-black">Festivals</a>
-          <a href="#" className="text-base font-black">About Us</a>
+      <header className="flex items-center justify-between px-6 py-4 relative max-w-[1550px] mx-auto">
+        <img src="/okcc-logo.jpg" alt="OKCC Logo" className="h-16" />
+        <nav className="hidden md:flex gap-16 items-center text-lg">
+          <a href="#" className="text-lg font-normal">Programs</a>
+          <a href="#" className="text-lg font-normal">Get Involved</a>
+          <a href="#" className="text-lg font-normal">Festivals</a>
+          <a href="#" className="text-lg font-normal">About Us</a>
         </nav>
-        <button className="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-black hidden md:inline-block">Sign In</button>
+        <button className="border-2 border-red-700 text-red-700 bg-white px-4 py-2 rounded-full text-sm font-black hidden md:inline-block">
+          Sign In
+        </button>
         <div className="md:hidden">
-          <FaBars className="text-2xl text-red-500" onClick={() => setMenuOpen(!menuOpen)} />
+          <FaBars className="text-2xl text-red-700" onClick={() => setMenuOpen(!menuOpen)} />
         </div>
         {menuOpen && (
           <div className="absolute top-full left-0 w-full bg-white text-black py-4 z-10 flex flex-col items-center space-y-2 md:hidden">
@@ -67,68 +56,76 @@ export default function HomePage() {
             <a href="#" className="text-base font-black">Get Involved</a>
             <a href="#" className="text-base font-black">Festivals</a>
             <a href="#" className="text-base font-black">About Us</a>
-            <button className="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-black">Sign In</button>
+            <button className="bg-red-700 text-white px-4 py-2 rounded-full text-sm font-black">Sign In</button>
           </div>
         )}
       </header>
 
       {/* Hero */}
-      <section className="relative text-white text-center py-32 px-4 bg-cover bg-center" style={{ backgroundImage: `url('/background.png')` }}>
-        <h2 className="text-2xl md:text-3xl font-black leading-relaxed">
-          안녕하세요,<br />올랜도 한국문화센터에 오신 것을 환영합니다.
-        </h2>
-        <p className="text-sm md:text-base mt-2 font-normal">Hello, welcome to the Orlando Korea Culture Center.</p>
-        <button className="bg-red-500 mt-6 px-6 py-2 rounded-full font-black text-white">Donate Today</button>
+      <section
+        className="relative text-white text-center py-32 px-4 bg-cover bg-center md:bg-[length:1500px] md:bg-no-repeat md:bg-center"
+        style={{ backgroundImage: `url('/background.png')` }}
+      >
+        <div className="max-w-[1550px] mx-auto">
+          <h2 className="text-3xl md:text-5xl font-black leading-relaxed">
+            안녕하세요,<br />올랜도 한국문화센터에 오신 것을 환영합니다.
+          </h2>
+          <p className="text-base md:text-xl mt-4 font-normal">
+            Hello, welcome to the Orlando Korea Culture Center.
+          </p>
+          <button className="bg-red-700 text-white mt-6 px-6 py-2 rounded-full font-black">
+            Donate Today
+          </button>
+        </div>
       </section>
 
       {/* News */}
       <section className="text-center py-12 px-4">
-        <h3 className="text-red-700 text-xl font-black mb-6">Recent News</h3>
+        <h3 className="text-red-700 text-2xl md:text-4xl font-black mb-10">Recent News</h3>
 
         {/* MOBILE carousel */}
         <div className="md:hidden" {...swipeHandlers}>
           <div className="relative overflow-hidden max-w-md mx-auto">
-            <div
-              className="transition-transform duration-700 flex"
-              style={{ transform: `translateX(-${currentNews * 100}%)` }}
-            >
+            <div className="transition-transform duration-700 flex" style={{ transform: `translateX(-${currentNews * 100}%)` }}>
               {newsItems.map((item, index) => (
                 <div key={index} className="w-full flex-shrink-0">
                   <img src={item.image} alt={item.title} className="w-full rounded-md" />
                   <h4 className="text-lg font-black mt-2">{item.title}</h4>
-                  <p className="text-sm text-gray-600 font-normal">{item.description}</p>
+                  <p className="text-base text-gray-600 font-normal">{item.description}</p>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* DESKTOP grid */}
-        <div className="hidden md:grid grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {newsItems.map((item, index) => (
-            <div key={index}>
-              <img src={item.image} alt={item.title} className="w-full rounded-md" />
-              <h4 className="text-lg font-black mt-2">{item.title}</h4>
-              <p className="text-sm text-gray-600 font-normal">{item.description}</p>
-            </div>
-          ))}
+        {/* DESKTOP layout aligned to background image */}
+        <div className="hidden md:flex w-full justify-center px-4">
+          <div className="flex w-full max-w-[1500px] justify-between gap-12">
+            {newsItems.map((item, index) => (
+              <div key={index} className="w-1/3">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-auto rounded-xl shadow-lg"
+                />
+                <h4 className="text-2xl font-black mt-4">{item.title}</h4>
+                <p className="text-lg text-gray-600 font-normal mt-2">{item.description}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Sponsors */}
       <section className="text-center py-12 px-4 md:px-16">
         <div className="max-w-6xl mx-auto">
-          <h3 className="text-red-700 text-2xl font-black mb-6 text-left">Become a Sponsor</h3>
+          <h3 className="text-red-700 text-2xl font-black mb-6 text-center md:text-left">Become a Sponsor</h3>
           <div className="md:flex md:gap-12 md:text-left">
-            <div className="flex-1 text-base text-gray-800 space-y-6 font-normal">
-              <p>
-                Thank you for your interest in sponsoring the 2025 Orlando Korea Festival.
-              </p>
-              <p>
-                Your generous sponsorship will help bring to life the Orlando Korea Culture Center's marquee event. Held in the fourth quarter of every year, the festival draws thousands of attendees eager to experience the best of Korean culture, food, and entertainment in Central Florida. The 2023 festival drew more than 3,000 attendees.
-              </p>
+            <div className="flex-1 text-lg md:text-xl text-gray-800 space-y-6 font-normal">
+              <p>Thank you for your interest in sponsoring the 2025 Orlando Korea Festival.</p>
+              <p>Your generous sponsorship will help bring to life the Orlando Korea Culture Center's marquee event...</p>
               <div className="hidden md:flex gap-4 mt-4">
-                <button className="bg-red-500 text-white px-4 py-2 rounded font-black">Learn More</button>
+                <button className="bg-red-700 text-white px-4 py-2 rounded font-black">Learn More</button>
                 <button className="border border-gray-500 px-4 py-2 rounded font-black">Prospectus</button>
               </div>
             </div>
@@ -140,22 +137,30 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#333333] text-white py-10 text-center text-sm px-4 font-normal">
+      <footer className="bg-[#333333] text-white py-10 text-sm px-4 font-normal">
         <div className="max-w-6xl mx-auto">
-          <div className="md:flex md:justify-between md:items-start">
-            <div className="flex flex-col items-center md:items-start">
+          <div className="md:flex md:justify-between md:items-start gap-8">
+            <div className="flex flex-col items-center w-full md:w-auto text-center">
               <img src="/okcc-logo-white.png" alt="OKCC Footer Logo" className="h-16 mb-4" />
-              <div className="flex gap-4">
+              <div className="flex justify-center gap-4">
                 <img src="/Facebook.png" alt="Facebook" className="h-6 w-6" />
                 <img src="/Youtube.png" alt="YouTube" className="h-6 w-6" />
                 <img src="/Instagram.png" alt="Instagram" className="h-6 w-6" />
               </div>
+              <p className="mt-2 text-sm text-white">hello@okccenter.com</p>
             </div>
-            <div className="mt-6 md:mt-0 flex-1">
+            <div className="mt-6 md:mt-0 flex-1 text-center">
               <h4 className="text-xl font-black">Stay Connected!</h4>
               <p className="text-base font-normal">Subscribe to our Newsletter</p>
-              <hr className="my-4 border-gray-500 w-48 mx-auto" />
-              <button className="bg-red-500 px-6 py-2 rounded-full text-white font-black">Subscribe</button>
+              <div className="flex flex-col items-center">
+                <input
+                  type="email"
+                  className="mt-4 mb-4 border-b border-white bg-transparent text-white text-center w-full max-w-xs focus:outline-none"
+                />
+                <button className="bg-red-700 px-6 py-2 rounded-full text-white font-black">
+                  Subscribe
+                </button>
+              </div>
             </div>
             <ul className="space-y-2 mt-6 md:mt-0 text-center md:text-left w-full md:w-auto">
               <li><a href="#">Contact Us</a></li>
