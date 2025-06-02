@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { FaBars } from 'react-icons/fa';
+import { FaGoogle } from 'react-icons/fa';
 
 const newsItems = [
   { title: 'News 1', description: "Body text for whatever you'd like to add more.", image: '/news-image.png' },
@@ -12,6 +13,8 @@ export default function HomePage() {
   const [currentNews, setCurrentNews] = useState(0);
   const [autoCycle, setAutoCycle] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  
 
   useEffect(() => {
     if (!autoCycle) return;
@@ -34,7 +37,7 @@ export default function HomePage() {
   });
 
   return (
-    <div className="font-brandon">
+    <div className="font-brandon overflow-x-hidden">
       {/* Header */}
       <header className="flex items-center justify-between px-6 py-4 relative max-w-[1550px] mx-auto">
         <img src="/okcc-logo.jpg" alt="OKCC Logo" className="h-16" />
@@ -44,7 +47,10 @@ export default function HomePage() {
           <a href="#" className="text-lg font-normal">Festivals</a>
           <a href="#" className="text-lg font-normal">About Us</a>
         </nav>
-        <button className="border-2 border-red-700 text-red-700 bg-white px-4 py-2 rounded-full text-sm font-black hidden md:inline-block">
+        <button
+          className="border-2 border-red-700 text-red-700 bg-white px-5 py-2.5 rounded-full text-base font-black hidden md:inline-block"
+          onClick={() => setShowModal(!showModal)}
+        >
           Sign In
         </button>
         <div className="md:hidden">
@@ -56,10 +62,62 @@ export default function HomePage() {
             <a href="#" className="text-base font-black">Get Involved</a>
             <a href="#" className="text-base font-black">Festivals</a>
             <a href="#" className="text-base font-black">About Us</a>
-            <button className="bg-red-700 text-white px-4 py-2 rounded-full text-sm font-black">Sign In</button>
+            <button
+              className="bg-red-700 text-white px-4 py-2 rounded-full text-sm font-black"
+              onClick={() => setShowModal(!showModal)}
+            >
+              Sign In
+            </button>
           </div>
         )}
       </header>
+
+      {/* Sign In Modal */}
+      {showModal && (
+  <div className="fixed z-50 top-20 md:top-34 right-6 md:right-[13.25rem]">
+    <div className="bg-white rounded-xl p-6 w-80 shadow-xl">
+      <div className="flex justify-end">
+        <button
+          className="text-gray-600 text-xl font-bold"
+          onClick={() => setShowModal(false)}
+        >
+          ×
+        </button>
+      </div>
+      <div className="space-y-4 mt-2">
+        <input
+          type="email"
+          placeholder="Enter your email address"
+          className="w-full px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none"
+        />
+        <input
+          type="password"
+          placeholder="Enter your password"
+          className="w-full px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none"
+        />
+        <button className="w-full bg-gray-300 text-white py-2 rounded-full font-bold text-sm">
+          Continue
+        </button>
+        <p className="text-center text-sm text-gray-600">Forgot password?</p>
+        <div className="flex items-center my-2">
+          <hr className="flex-grow border-gray-300" />
+          <span className="mx-2 text-gray-500 text-xs">OR</span>
+          <hr className="flex-grow border-gray-300" />
+        </div>
+        <button className="w-full border border-black flex items-center justify-center gap-2 py-2 rounded-full text-sm">
+          <FaGoogle className="h-5 w-5 " />
+          Continue with Google
+        </button>
+        <p className="text-center text-sm text-gray-600 mt-2">
+          Don’t have an account?{" "}
+          <span className="font-bold text-black">Sign up for free</span>
+        </p>
+      </div>
+    </div>
+  </div>
+)}
+
+
 
       {/* Hero */}
       <section
@@ -73,17 +131,19 @@ export default function HomePage() {
           <p className="text-base md:text-xl mt-4 font-normal">
             Hello, welcome to the Orlando Korea Culture Center.
           </p>
-          <button className="bg-red-700 text-white mt-6 px-6 py-2 rounded-full font-black">
-            Donate Today
-          </button>
+          <button
+  style={{ padding: '0.75rem 2rem', fontSize: '1.05rem' }}
+  className="bg-red-700 text-white mt-6 rounded-full font-black"
+>
+  Donate Today
+</button>
+
         </div>
       </section>
 
       {/* News */}
       <section className="text-center py-12 px-4">
         <h3 className="text-red-700 text-2xl md:text-4xl font-black mb-10">Recent News</h3>
-
-        {/* MOBILE carousel */}
         <div className="md:hidden" {...swipeHandlers}>
           <div className="relative overflow-hidden max-w-md mx-auto">
             <div className="transition-transform duration-700 flex" style={{ transform: `translateX(-${currentNews * 100}%)` }}>
@@ -97,17 +157,11 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-
-        {/* DESKTOP layout aligned to background image */}
         <div className="hidden md:flex w-full justify-center px-4">
           <div className="flex w-full max-w-[1500px] justify-between gap-12">
             {newsItems.map((item, index) => (
               <div key={index} className="w-1/3">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-auto rounded-xl shadow-lg"
-                />
+                <img src={item.image} alt={item.title} className="w-full h-auto rounded-xl shadow-lg" />
                 <h4 className="text-2xl font-black mt-4">{item.title}</h4>
                 <p className="text-lg text-gray-600 font-normal mt-2">{item.description}</p>
               </div>
@@ -125,9 +179,10 @@ export default function HomePage() {
               <p>Thank you for your interest in sponsoring the 2025 Orlando Korea Festival.</p>
               <p>Your generous sponsorship will help bring to life the Orlando Korea Culture Center's marquee event...</p>
               <div className="hidden md:flex gap-4 mt-4">
-                <button className="bg-red-700 text-white px-4 py-2 rounded font-black">Learn More</button>
-                <button className="border border-gray-500 px-4 py-2 rounded font-black">Prospectus</button>
-              </div>
+  <button className="bg-red-700 text-white px-4 py-2 rounded-full font-black">Learn More</button>
+  <button className="border border-gray-500 px-4 py-2 rounded-full font-black">Prospectus</button>
+</div>
+
             </div>
             <div className="flex-1 mt-6 md:mt-0">
               <img src="/sponsors.png" alt="Sponsors" className="w-full max-w-full" />
@@ -155,6 +210,7 @@ export default function HomePage() {
               <div className="flex flex-col items-center">
                 <input
                   type="email"
+                  placeholder="Subscribe to the newsletter here!"
                   className="mt-4 mb-4 border-b border-white bg-transparent text-white text-center w-full max-w-xs focus:outline-none"
                 />
                 <button className="bg-red-700 px-6 py-2 rounded-full text-white font-black">
