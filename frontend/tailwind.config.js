@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        brandon: ['"Brandon Grotesque"', 'sans-serif'],
+        roboto: ['Roboto', 'sans-serif'],
       },
     },
   },

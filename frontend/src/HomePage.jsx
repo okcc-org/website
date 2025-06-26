@@ -83,7 +83,7 @@ export default function HomePage() {
 
 
   return (
-    <div className="font-brandon overflow-x-hidden">
+    <div className="overflow-x-hidden">
       {/* Header */}
       <header className="flex items-center justify-between px-6 py-4 relative max-w-[1550px] mx-auto">
         <img
