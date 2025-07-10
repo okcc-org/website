@@ -50,7 +50,7 @@ model News {
   id          Int           @id @default(autoincrement())
   title       String
   summary     String?       @db.Text
-  thumbnail   String        # thumbnail url
+  thumbnail   String        // thumbnail url
   createdAt   DateTime      @default(now()) @map("created_at")
   updatedAt   DateTime      @updatedAt @map("updated_at")
 

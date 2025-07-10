@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../config/multer');
+const { isAdmin } = require('../middleware/authenticateUser');
 const { getRecentNews, getNewsById, createNews, updateNews, deleteNews } = require('../controllers/newsController');
 
 // Get all news
@@ -10,18 +11,18 @@ router.get('/', getRecentNews);
 router.get('/:id', getNewsById);
 
 // Create news with multiple images
-router.post('/', upload.fields([
+router.post('/', isAdmin, upload.fields([
     { name: 'thumbnail', maxCount: 1 },
     { name: 'contents[][image]', maxCount: 10 }  // Handle images in contents array
 ]), createNews);
 
 // Update news with multiple images
-router.put('/:id', upload.fields([
+router.put('/:id', isAdmin, upload.fields([
     { name: 'thumbnail', maxCount: 1 },
     { name: 'contents[][image]', maxCount: 10 }
 ]), updateNews);
 
 // Delete news
-router.delete('/:id', deleteNews);
+router.delete('/:id', isAdmin, deleteNews);
 
 module.exports = router;

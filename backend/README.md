@@ -40,9 +40,13 @@ git clone [repository-url]
 ```bash
 npm install
 ```
-5. Database migration
+5. Database setup
 ```bash
-npx prisma migrate dev
+# Create database tables
+npx prisma migrate deploy
+
+# Generate Prisma Client
+npx prisma generate
 ```
 
 6. Create .env file and set required environment variables:

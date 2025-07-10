@@ -30,13 +30,13 @@ exports.updateUser = async (req, res, next) => {
 
         // Check if the field exists and add it to the updateData object
         if (fullName !== undefined) {
-            updateData.fullName = fullName;
+            updateData.name = fullName;
         }
         if (phone !== undefined) {
             updateData.phone = phone;
         }
         if (address !== undefined) {
-            if (!address.address1 || !address.city || !address.state || !address.zipcode) {
+            if (!address.address1 || !address.city || !address.state || !address.zip) {
                 throw BadRequestError("Address must include address1, city, state, and zipcode");
             }
             updateData.address = {
