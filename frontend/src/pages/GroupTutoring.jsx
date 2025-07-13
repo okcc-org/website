@@ -23,11 +23,36 @@ export default function GroupTutoring() {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </p>
 
-        <div className="flex justify-center gap-6 flex-wrap max-w-5xl mx-auto">
-          {[...Array(5)].map((_, index) => (
-            <div key={index} className="w-24 h-10 bg-black"></div>
-          ))}
-        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+  {/* PRICE */}
+  <div className="bg-[#333333] text-white p-6 rounded-md text-center space-y-2">
+    <h3 className="text-lg font-bold tracking-wide">PRICE</h3>
+    <p>Everything included for</p>
+    <p className="text-xl font-semibold">$40</p>
+  </div>
+
+  {/* LOCATION */}
+  <div className="bg-[#333333] text-white p-6 rounded-md text-center space-y-2">
+    <h3 className="text-lg font-bold tracking-wide">LOCATION</h3>
+    <p>7000 Winegard Rd</p>
+    <p>Orlando, FL 32809</p>
+  </div>
+
+  {/* DATE */}
+  <div className="bg-[#333333] text-white p-6 rounded-md text-center space-y-2">
+    <h3 className="text-lg font-bold tracking-wide">DATE</h3>
+    <p>February 1st, 2025</p>
+    <p>Saturday</p>
+  </div>
+
+  {/* TIME */}
+  <div className="bg-[#333333] text-white p-6 rounded-md text-center space-y-2">
+    <h3 className="text-lg font-bold tracking-wide">TIME</h3>
+    <p>11AM</p>
+    <p>Approximately 2 hrs</p>
+  </div>
+</div>
+
       </section>
     </div>
   );

@@ -19,9 +19,9 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/header';
 import Footer from './components/Footer';
-import Homepage from './pages/Test';
+import Homepage from './pages/LandingPage';
 import Register from './pages/Register'; // ✅ Add this
-import AboutPage from './pages/AboutPage'; 
+import AboutPage from './pages/AboutPage';
 import Classes from './pages/Classes';
 import LanguageClass from './pages/LanguageClass';
 import GroupTutoring from './pages/GroupTutoring';
@@ -40,7 +40,7 @@ const App = () => {
         <Route path="/classes/language-class" element={<LanguageClass />} />
         <Route path="/classes/group-tutoring" element={<GroupTutoring />} />
         <Route path="/classes/traveler-class" element={<TravelerClass />} />
-        
+
       </Routes>
       <Footer />
     </>
