@@ -1,8 +1,5 @@
 @import "tailwindcss";
-@tailwind base;
-@tailwind components;
 @tailwind utilities;
-
 /* Roboto Font-Face Declarations */
 @font-face {
   font-family: 'Roboto';
@@ -30,6 +27,15 @@
 }
 /* Add more if you use other weights/styles */
 
+html {
+  position: relative;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
+  position: relative;
+}
+
+#root {
+  position: relative;
 }

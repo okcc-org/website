@@ -30,7 +30,7 @@ import TravelerClass from './pages/TravelerClass';
 
 const App = () => {
   return (
-    <>
+    <div className="relative">
       <Header />
       <Routes>
         <Route path="/" element={<Homepage />} />
@@ -43,7 +43,7 @@ const App = () => {
 
       </Routes>
       <Footer />
-    </>
+    </div>
   );
 };
 
