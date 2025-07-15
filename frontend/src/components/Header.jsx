@@ -77,7 +77,7 @@ const Header = () => {
             </div>
           </div>
 
-          <a href="#" className="hover:opacity-80 transition">Events</a>
+          <Link to="/events" className="hover:opacity-80 transition">Events</Link>
           <a href="#" className="hover:opacity-80 transition">Support Us</a>
           <a href="#" className="hover:opacity-80 transition">Shop</a>
         </nav>
@@ -244,13 +244,13 @@ const Header = () => {
                   </div>
                 </div>
                 
-                <a 
-                  href="#" 
+                <Link 
+                  to="/events" 
                   className="block text-base font-normal hover:text-red-700 transition py-1"
                   onClick={() => setShowMobileMenu(false)}
                 >
                   Events
-                </a>
+                </Link>
                 <a 
                   href="#" 
                   className="block text-base font-normal hover:text-red-700 transition py-1"

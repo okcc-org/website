@@ -141,13 +141,18 @@ export default function Homepage() {
             <p className="text-lg text-gray-800 leading-relaxed">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
-            <motion.button
+            <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="mt-8 border border-black px-6 py-3 text-base font-semibold hover:bg-black hover:text-white transition-all duration-300"
+              className="mt-8"
             >
-              Learn More
-            </motion.button>
+              <Link
+                to="/events"
+                className="inline-block border border-black px-6 py-3 text-base font-semibold hover:bg-black hover:text-white transition-all duration-300"
+              >
+                Learn More
+              </Link>
+            </motion.div>
           </motion.div>
 
           {/* Right Image Side */}

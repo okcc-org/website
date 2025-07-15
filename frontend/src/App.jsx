@@ -26,6 +26,7 @@ import Classes from './pages/Classes';
 import LanguageClass from './pages/LanguageClass';
 import GroupTutoring from './pages/GroupTutoring';
 import TravelerClass from './pages/TravelerClass';
+import Events from './pages/Events';
 
 
 const App = () => {
@@ -40,6 +41,7 @@ const App = () => {
         <Route path="/classes/language-class" element={<LanguageClass />} />
         <Route path="/classes/group-tutoring" element={<GroupTutoring />} />
         <Route path="/classes/traveler-class" element={<TravelerClass />} />
+        <Route path="/events" element={<Events />} />
 
       </Routes>
       <Footer />
