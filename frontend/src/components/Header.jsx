@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaGoogle } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -84,7 +85,7 @@ const Header = () => {
       </div>
 
       {/* Desktop Sign In + Donate */}
-      <div className="hidden md:flex space-x-4 relative">
+      <div className="hidden md:flex space-x-4">
         <button
           className="bg-[#333333] text-white px-6 py-2 rounded text-xl font-normal hover:bg-gray-700 transition"
           onClick={() => setShowModal(!showModal)}
@@ -94,82 +95,42 @@ const Header = () => {
         <button className="bg-red-700 hover:bg-red-800 text-white px-6 py-2 rounded text-xl font-normal transition">
           Donate
         </button>
-
-        {/* Desktop Modal */}
-        <AnimatePresence>
-          {showModal && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="absolute right-0 top-full mt-2 z-50 bg-white rounded-xl p-6 w-80 shadow-xl"
-            >
-              <div className="flex justify-end">
-                <button className="text-gray-600 text-xl font-bold hover:text-red-700 hover:scale-110 transition-all duration-200" onClick={() => setShowModal(false)}>×</button>
-              </div>
-              <form onSubmit={handleLogin} className="space-y-4 mt-2">
-                <input
-                  type="email"
-                  placeholder="Enter your email address"
-                  value={loginEmail}
-                  onChange={(e) => setLoginEmail(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200"
-                  required
-                  autoComplete="email"
-                />
-                <input
-                  type="password"
-                  placeholder="Enter your password"
-                  value={loginPassword}
-                  onChange={(e) => setLoginPassword(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200"
-                  required
-                  autoComplete="current-password"
-                />
-                <button
-                  type="submit"
-                  disabled={!loginEmail || !loginPassword}
-                  className={`w-full py-2 rounded-full font-bold text-sm transition ${loginEmail && loginPassword
-                      ? 'bg-red-700 text-white hover:bg-red-800'
-                      : 'bg-gray-300 text-white cursor-not-allowed'
-                    }`}
-                >
-                  Continue
-                </button>
-
-                {loginError && <p className="text-center text-sm text-red-600">{loginError}</p>}
-                {loginSuccess && <p className="text-center text-sm text-green-600">{loginSuccess}</p>}
-
-                <p className="text-center text-sm text-gray-600">Forgot password?</p>
-                <div className="flex items-center my-2">
-                  <hr className="flex-grow border-gray-300" />
-                  <span className="mx-2 text-gray-500 text-xs">OR</span>
-                  <hr className="flex-grow border-gray-300" />
-                </div>
-                <a
-                  href="http://localhost:8080/api/auth/google"
-                  className="w-full border border-black flex items-center justify-center gap-2 py-2 rounded-full text-sm font-semibold hover:bg-gray-100 transition"
-                >
-                  <FaGoogle className="h-5 w-5" />
-                  Continue with Google
-                </a>
-                <p className="text-center text-sm text-gray-600 mt-2">
-                  Don't have an account?{' '}
-                  <span
-                    onClick={() => {
-                      setShowModal(false);
-                      navigate('/register');
-                    }}
-                    className="font-bold text-black cursor-pointer underline"
-                  >
-                    Sign up for free
-                  </span>
-                </p>
-              </form>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
+      {/* Desktop Modal (portal) */}
+      {showModal && createPortal(
+        <AnimatePresence>
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="fixed right-4 top-20 z-50 bg-white rounded-xl p-6 w-80 shadow-xl"
+          >
+            <div className="flex justify-end">
+              <button
+                className="text-gray-600 text-xl font-bold hover:text-red-700 hover:scale-110 transition-all duration-200"
+                onClick={() => setShowModal(false)}
+              >
+                ×
+              </button>
+            </div>
+            <form onSubmit={handleLogin} className="space-y-4 mt-2">
+              {/* email */}
+              <input type="email" placeholder="Enter your email address" value={loginEmail} onChange={(e)=>setLoginEmail(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200" required autoComplete="email" />
+              {/* password */}
+              <input type="password" placeholder="Enter your password" value={loginPassword} onChange={(e)=>setLoginPassword(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200" required autoComplete="current-password" />
+              {/* continue */}
+              <button type="submit" disabled={!loginEmail || !loginPassword} className={`w-full py-2 rounded-full font-bold text-sm transition ${loginEmail && loginPassword ? 'bg-red-700 text-white hover:bg-red-800' : 'bg-[#333333] text-white cursor-not-allowed'}`}>Continue</button>
+              {loginError && <p className="text-center text-sm text-red-600">{loginError}</p>}
+              {loginSuccess && <p className="text-center text-sm text-green-600">{loginSuccess}</p>}
+              <p className="text-center text-sm text-gray-600">Forgot password?</p>
+              <div className="flex items-center my-2"><hr className="flex-grow border-gray-300" /><span className="mx-2 text-gray-500 text-xs">OR</span><hr className="flex-grow border-gray-300" /></div>
+              <a href="http://localhost:8080/api/auth/google" className="w-full border border-black flex items-center justify-center gap-2 py-2 rounded-full text-sm font-semibold hover:bg-gray-100 transition"><FaGoogle className="h-5 w-5" />Continue with Google</a>
+              <p className="text-center text-sm text-gray-600 mt-2">Don't have an account?{' '}<span onClick={()=>{setShowModal(false); navigate('/register');}} className="font-bold text-black cursor-pointer underline">Sign up for free</span></p>
+            </form>
+          </motion.div>
+        </AnimatePresence>,
+        document.body
+      )}
 
       {/* Mobile Hamburger Button */}
       <button
@@ -341,7 +302,7 @@ const Header = () => {
                     disabled={!loginEmail || !loginPassword}
                     className={`w-full py-3 rounded-lg font-bold text-base transition ${loginEmail && loginPassword
                         ? 'bg-red-700 text-white hover:bg-red-800'
-                        : 'bg-gray-300 text-white cursor-not-allowed'
+                        : 'bg-[#333333] text-white cursor-not-allowed'
                       }`}
                   >
                     Continue

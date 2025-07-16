@@ -4,9 +4,14 @@ export default function TravelerClass() {
   return (
     <div className="overflow-x-hidden">
 
-      {/* Hero Section with Gray Background */}
-      <section className="w-full min-h-[600px] bg-gray-200 flex flex-col justify-center items-center text-center px-4">
-        <div className="bg-white/70 p-6 rounded-xl max-w-2xl">
+      {/* Hero Section with Background Image */}
+      <section
+        className="w-full min-h-[600px] bg-cover bg-center relative flex flex-col justify-center items-center text-center px-4"
+        style={{ backgroundImage: "url('/travelClass.png')" }}
+      >
+        <div className="absolute inset-0 bg-black/40" />
+        
+        <div className="relative z-10 bg-white/80 p-8 rounded-xl max-w-2xl">
           <h1 className="text-4xl font-black mb-4">Traveler's Korean Class</h1>
           <p className="text-base text-black">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
