@@ -13,4 +13,4 @@ package-lock.json
 src/uploads/
 
 # Google Sheets
-src/config/okcc-website-68777bf4d82a.json
+credentials.json
