@@ -26,8 +26,6 @@ import Classes from './pages/Classes';
 import LanguageClass from './pages/LanguageClass';
 import GroupTutoring from './pages/GroupTutoring';
 import TravelerClass from './pages/TravelerClass';
-import PaymentSuccess from './pages/PaymentSuccess';
-
 
 
 const App = () => {
@@ -38,7 +36,6 @@ const App = () => {
         <Route path="/" element={<Homepage />} />
         <Route path="/register" element={<Register />} /> {/* ✅ New route */}
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/success" element={<PaymentSuccess />} />
         <Route path="/classes" element={<Classes />} />
         <Route path="/classes/language-class" element={<LanguageClass />} />
         <Route path="/classes/group-tutoring" element={<GroupTutoring />} />
