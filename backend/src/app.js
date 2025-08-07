@@ -26,6 +26,7 @@ app.use('/uploads', express.static('uploads'));
 // Initialize Passport
 app.use(passport.initialize());
 
+// For testing
 // Routes
 // app.get('/', (req, res) => {
 //   res.send('<a href="/api/auth/google">Login with Google</a>');
@@ -33,7 +34,7 @@ app.use(passport.initialize());
 // app.get('/google', (req, res) => {
 //   res.send('<a href="/api/auth/google/signup">Signup with Google</a>');
 // });
-app.use('/api', require('./routers'));
+app.use('/api', require('./routes'));
 
 // Error handling middleware
 app.use(errorHandler);

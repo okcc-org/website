@@ -10,4 +10,7 @@ package-lock.json
 .idea/
 
 # Images
-./src/uploads/
+src/uploads/
+
+# Google Sheets
+credentials.json

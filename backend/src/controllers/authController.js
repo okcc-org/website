@@ -131,7 +131,7 @@ exports.googleCallback = async (req, res, next) => {
 
             // Redirect to frontend with token
             // redirect url should be modified
-            res.redirect(`${process.env.FRONTEND_URL}`);
+            res.redirect('http://localhost:8080/');
         } catch (e) {
             next(e);
         }

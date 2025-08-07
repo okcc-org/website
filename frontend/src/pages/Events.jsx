@@ -1,7 +1,8 @@
 // Events.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { EventCard as CalendarEventCard } from "../components/EventCard";
 
 /* ────────────────────────────── animation variants ───────────────────────────── */
 const fadeInUp = {
@@ -43,6 +44,7 @@ function AnimatedSection({ children, className = '' }) {
   );
 }
 
+/*
 const EventCard = React.memo(function EventCard({ event }) {
   return (
     <motion.div
@@ -75,69 +77,29 @@ const EventCard = React.memo(function EventCard({ event }) {
     </motion.div>
   );
 });
+*/
 
 /* ─────────────────────────────── main component ──────────────────────────────── */
 export default function Events() {
   const [searchTerm, setSearchTerm]   = useState('');
   const [selectedMonth]               = useState('June 2025');
+  const [events, setEvents]           = useState([]);
+  const [loading, setLoading]         = useState(true);
 
+  /*
   // sample events data (replace with API / props as needed)
   const events = [
-    {
-      id: 1,
-      title: 'Seoul Dalbam Night Market',
-      time: '6PM - 10PM',
-      category: 'Cultural',
-      date: '13',
-      month: 'JUL',
-      image: '/upcomingEvent.jpg'
-    },
-    {
-      id: 2,
-      title: 'Korean Language Class',
-      time: '10AM - 12PM',
-      category: 'Classes',
-      date: '26',
-      month: 'JUL',
-      image: '/koreanClass.png'
-    },
-    {
-      id: 3,
-      title: 'K-pop Contest',
-      time: '12PM - 6PM',
-      category: 'K-pop',
-      date: '26',
-      month: 'JUL',
-      image: '/news-image.png'
-    },
-    {
-      id: 4,
-      title: 'Korean Language Class (Virtual)',
-      time: '6PM - 10PM',
-      category: 'Classes',
-      date: '26',
-      month: 'JUL',
-      image: '/koreanClass.png'
-    },
-    {
-      id: 5,
-      title: 'Cooking Class',
-      time: '4PM - 6PM',
-      category: 'Classes',
-      date: '27',
-      month: 'JUL',
-      image: '/groupTutoring.jpeg'
-    },
-    {
-      id: 6,
-      title: 'Orlando Korea Festival',
-      time: '9AM - 5PM',
-      category: 'Cultural',
-      date: '28',
-      month: 'JUL',
-      image: '/palace.jpg'
-    }
+    // ... existing fake events array ...
   ];
+  */
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/events")
+      .then((r) => r.json())
+      .then((data) => setEvents(Array.isArray(data?.data) ? data.data : []))
+      .catch(() => setEvents([]))
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <div className="min-h-screen bg-white">
@@ -235,7 +197,8 @@ export default function Events() {
           </motion.div>
         </AnimatedSection>
 
-        {/* events grid */}
+        {/* events grid (old image-based cards) */}
+        {/*
         <AnimatedSection>
           <motion.div
             variants={staggerContainer}
@@ -244,11 +207,41 @@ export default function Events() {
             viewport={{ once: true }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-                         {events.map(event => <EventCard key={event.id} event={event} />)}
+            {events.map(event => <EventCard key={event.id} event={event} />)}
           </motion.div>
+        </AnimatedSection>
+        */}
+
+        {/* events grid (Google Calendar cards) */}
+        <AnimatedSection>
+          {loading ? (
+            <div className="text-center text-gray-600">Loading events...</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {events.map((ev) => {
+                const start = ev?.start || null;
+                const end = ev?.end || null;
+                const isAllDay = Boolean(ev?.isAllDay);
+                const mappedEvent = {
+                  title: ev?.title || ev?.summary || "(No title)",
+                  description: ev?.description || null,
+                  location: ev?.location || null,
+                  start: isAllDay ? { date: start } : { dateTime: start },
+                  end: isAllDay ? { date: end } : { dateTime: end },
+                };
+                return (
+                  <CalendarEventCard
+                    key={ev.id || ev.iCalUID}
+                    event={mappedEvent}
+                  />
+                );
+              })}
+            </div>
+          )}
         </AnimatedSection>
 
         {/* load more */}
+        {/*
         <AnimatedSection className="mt-12 text-center">
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -258,6 +251,7 @@ export default function Events() {
             Load More Events
           </motion.button>
         </AnimatedSection>
+        */}
       </div>
     </div>
   );
