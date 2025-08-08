@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { EventCard as CalendarEventCard } from "../components/EventCard";
+import useTitle from '../hooks/useTitle';
 
 /* ────────────────────────────── animation variants ───────────────────────────── */
 const fadeInUp = {
@@ -81,6 +82,7 @@ const EventCard = React.memo(function EventCard({ event }) {
 
 /* ─────────────────────────────── main component ──────────────────────────────── */
 export default function Events() {
+  useTitle("Events | OKCC");
   const [searchTerm, setSearchTerm]   = useState('');
   const [selectedMonth]               = useState('June 2025');
   const [events, setEvents]           = useState([]);

@@ -1,6 +1,8 @@
 import React from 'react';
+import useTitle from '../hooks/useTitle';
 
 export default function TravelerClass() {
+  useTitle("Traveler's Korean Class | OKCC");
   return (
     <div className="overflow-x-hidden">
 

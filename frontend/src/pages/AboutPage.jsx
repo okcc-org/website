@@ -1,8 +1,10 @@
 import React from 'react';
 import Header from '../components/header';
 import Footer from '../components/Footer';
+import useTitle from '../hooks/useTitle';
 
 const AboutPage = () => {
+  useTitle("About Us | OKCC");
   return (
     <>
       <main className="w-full px-4 py-8 md:py-16 space-y-12 md:space-y-20">

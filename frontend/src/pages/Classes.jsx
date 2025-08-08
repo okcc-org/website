@@ -1,4 +1,5 @@
 import React from 'react';
+import useTitle from '../hooks/useTitle';
 
 const classes = [
   {
@@ -28,6 +29,7 @@ const classes = [
 ];
 
 export default function Classes() {
+  useTitle("Classes | OKCC");
   return (
     <div className="bg-white">
       {/* Hero Image */}

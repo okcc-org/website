@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import useTitle from '../hooks/useTitle';
 
 // Animation variants for fade-in effects
 const fadeInUp = {
@@ -49,6 +50,7 @@ const AnimatedSection = ({ children, className = "" }) => {
 };
 
 export default function Homepage() {
+  useTitle("Home | OKCC");
   const [email, setEmail] = useState('');
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({

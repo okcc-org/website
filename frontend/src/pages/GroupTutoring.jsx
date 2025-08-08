@@ -1,6 +1,8 @@
 import React from 'react';
+import useTitle from '../hooks/useTitle';
 
 export default function GroupTutoring() {
+  useTitle("Group Tutoring | OKCC");
   return (
     <div className="overflow-x-hidden">
 
