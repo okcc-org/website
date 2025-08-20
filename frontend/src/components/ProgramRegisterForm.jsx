@@ -7,9 +7,9 @@ const ClassSignupForm = () => {
     email: '',
     phone: '',
     className: '',
-    takenBefore: '',
-    discoverySource: '',
-    focusRequest: '',
+    q1: '',
+    q2: '',
+    q3: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -110,8 +110,8 @@ const ClassSignupForm = () => {
       />
 
       <select
-        name="takenBefore"
-        value={formData.takenBefore}
+        name="q1"
+        value={formData.q1}
         onChange={handleChange}
         required
         className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -123,18 +123,18 @@ const ClassSignupForm = () => {
 
       <input
         type="text"
-        name="discoverySource"
+        name="q2"
         placeholder="How did you discover our Korean Language School?"
-        value={formData.discoverySource}
+        value={formData.q2}
         onChange={handleChange}
         required
         className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
       />
 
       <textarea
-        name="focusRequest"
+        name="q3"
         placeholder="Is there anything specific you'd like to focus on during the class?"
-        value={formData.focusRequest}
+        value={formData.q3}
         onChange={handleChange}
         rows={4}
         className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
