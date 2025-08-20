@@ -16,15 +16,22 @@ export function EventCard({ event, locale = "en-US", timeZone }) {
 
   const isAllDay = Boolean(startRaw.date && !startRaw.dateTime);
 
-  const startValue = startRaw || startRaw.date || null;
-  const endValue = endRaw.dateTime || endRaw.date || null;
+  const startValue =  startRaw.date || null;
+  const endValue =  endRaw.date || null;
 
   const title = event.title || "(No title)";
   const location = event.location || null;
-  const description =
-    typeof event.description === "string" && event.description.trim().length
-      ? event.description.trim()
-      : null;
+
+  function sanitizeHtmlToText(input) {
+    if (typeof input !== "string") return null;
+    // Convert HTML to plain text and strip tags/attributes like href
+    const container = document.createElement("div");
+    container.innerHTML = input;
+    const text = container.textContent || container.innerText || "";
+    return text.trim() || null;
+  }
+
+  const description = sanitizeHtmlToText(event.description);
 
   // Formatters
   const dateFmt = new Intl.DateTimeFormat(locale, {

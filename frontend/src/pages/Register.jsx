@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { FaGoogle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import useTitle from '../hooks/useTitle';
 
 export default function Register() {
+  useTitle("Register | OKCC");
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
