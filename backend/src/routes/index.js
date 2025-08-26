@@ -12,6 +12,7 @@ const eventRoutes = require('./eventRoutes');
 
 
 
+
 // Mount routes
 router.use('/auth', authRoutes);
 router.use('/subscribe', subscribeRoutes);
@@ -20,6 +21,7 @@ router.use('/user', userRoutes);
 router.use('/classes', classesRoutes);
 router.use('/program', programRoutes)
 router.use('/events', eventRoutes)
+
 
 
 module.exports = router;

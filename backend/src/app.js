@@ -7,15 +7,16 @@ const errorHandler = require('./middleware/errorHandler');
 const passport = require('./config/passport');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./config/swagger');
+const {webhookHandler} = require('./controllers/webhookController')
+
 
 const app = express();
 
 // Middleware
 app.use(helmet());
 app.use(cors(config.cors));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
+app.use(express.urlencoded({ extended: true }));
 
 // swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -26,6 +27,11 @@ app.use('/uploads', express.static('uploads'));
 // Initialize Passport
 app.use(passport.initialize());
 
+app.post('/api/webhook', express.raw({type: 'application/json'}), webhookHandler); // webhook for stripe, before json middleware for a reason
+app.use(express.json());
+
+
+
 // For testing
 // Routes
 // app.get('/', (req, res) => {
@@ -35,6 +41,7 @@ app.use(passport.initialize());
 //   res.send('<a href="/api/auth/google/signup">Signup with Google</a>');
 // });
 app.use('/api', require('./routes'));
+
 
 // Error handling middleware
 app.use(errorHandler);
