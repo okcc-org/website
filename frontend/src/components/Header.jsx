@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaGoogle } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
+//comment just to push this file with the proper name
 
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
@@ -79,7 +80,8 @@ const Header = () => {
           </div>
 
           <Link to="/events" className="hover:opacity-80 transition">Events</Link>
-          <a href="#" className="hover:opacity-80 transition">Support Us</a>
+          <Link to="/registration" className="hover:opacity-80 transition">Registration</Link>
+          <Link to="/support" className="hover:opacity-80 transition">Support Us</Link>
           <a href="#" className="hover:opacity-80 transition">Shop</a>
         </nav>
       </div>
@@ -212,13 +214,20 @@ const Header = () => {
                 >
                   Events
                 </Link>
-                <a 
-                  href="#" 
+                <Link 
+                  to="/registration" 
+                  className="block text-base font-normal hover:text-red-700 transition py-1"
+                  onClick={() => setShowMobileMenu(false)}
+                >
+                  Registration
+                </Link>
+                <Link 
+                  to="/support" 
                   className="block text-base font-normal hover:text-red-700 transition py-1"
                   onClick={() => setShowMobileMenu(false)}
                 >
                   Support Us
-                </a>
+                </Link>
                 <a 
                   href="#" 
                   className="block text-base font-normal hover:text-red-700 transition py-1"
