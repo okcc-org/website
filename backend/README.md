@@ -80,6 +80,10 @@ STORAGE_TYPE=local
 npm run start
 ```
 
+8. To develope with Stripe api and forward webhook requests to the local server run this command with the Stripe CLI: 
+   stripe listen --forward-to localhost:8080/api/webhook
+
+
 ## API Documentation
 - API documentation using Swagger UI
 - Access URL: `http://localhost:8080/api-docs`
