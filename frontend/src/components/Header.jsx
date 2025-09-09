@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaGoogle } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
+//comment just to push this file with the proper name
 
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
