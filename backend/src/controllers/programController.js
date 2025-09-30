@@ -23,8 +23,8 @@ exports.redirectToCheckout = async (req, res, next) => {
       quantity: 1,
     }],
     mode: 'payment',
-    success_url: `http://127.0.0.1:5173/classes`,
-    cancel_url: `http://127.0.0.1:5173/classes`,
+    success_url: `http://127.0.0.1:5173/payment/successful`,
+    cancel_url: `http://127.0.0.1:5173/payment/unsuccessful`,
     payment_intent_data:{
       metadata: formData,
     }
